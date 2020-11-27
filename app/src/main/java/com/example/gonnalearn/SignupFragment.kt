@@ -1,4 +1,3 @@
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +5,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.gonnalearn.R
-import com.google.android.material.snackbar.Snackbar
 
 
 // Here ":" symbol is indicate that SignupFragment
@@ -21,7 +19,7 @@ class SignupFragment : Fragment() {
     ): View? {
 
         val myInflater = inflater.inflate(
-                R.layout.layout_signup, container, false
+                R.layout.signup_fragment, container, false
         )
 
         val spinner = myInflater.findViewById<Spinner>(R.id.roleSpinner)

@@ -2,19 +2,20 @@ package com.example.gonnalearn
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.ViewParent
+import android.widget.LinearLayout
 import android.widget.TableLayout
+import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.ui.*
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
@@ -44,9 +45,48 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
+            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
+
         setupActionBarWithNavController(navController, appBarConfiguration)
+
         navView.setupWithNavController(navController)
+
+        // Navigation drawer items' event click listeners
+        navView.setNavigationItemSelectedListener(object : NavigationView.OnNavigationItemSelectedListener {
+            override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+                val id: Int = menuItem.getItemId()
+                //it's possible to do more actions on several items, if there is a large amount of items I prefer switch(){case} instead of if()
+                if (id == R.id.nav_home) {
+                  //  Toast.makeText(applicationContext, "Home", Toast.LENGTH_SHORT).show()
+
+                    //When nav_home item is pressed then unhide the tab layout
+                    val ll_1 = findViewById<View>(R.id.tab_linear_layout) as LinearLayout
+                    val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+
+                    ll_1.setVisibility(View.VISIBLE)
+                    ll_2.setVisibility(View.VISIBLE)
+
+                }else if(id == R.id.nav_gallery){
+
+                  //  Toast.makeText(applicationContext, "Slide", Toast.LENGTH_SHORT).show()
+
+                    //When nav_gallery item is pressed then hide the tab layout
+                    val ll_1 = findViewById<View>(R.id.tab_linear_layout) as LinearLayout
+                    val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+
+                    ll_1.setVisibility(View.GONE)
+                    ll_2.setVisibility(View.GONE)
+
+                }else if(id == R.id.nav_slideshow){
+                    //  Toast.makeText(applicationContext, "Slide", Toast.LENGTH_SHORT).show()
+                }
+                //This is for maintaining the behavior of the Navigation view
+                NavigationUI.onNavDestinationSelected(menuItem, navController)
+                //This is for closing the drawer after acting on it
+
+                return true
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
