@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    var role : String? = "Tutor" // Role of the authenticated user
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,7 +48,8 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_schedule, R.id.nav_tutor_list), drawerLayout)
+            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_schedule, R.id.nav_tutor_list,
+        R.id.nav_requests, R.id.nav_tutor_search, R.id.nav_sign_out), drawerLayout)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -110,22 +113,43 @@ class MainActivity : AppCompatActivity() {
 
 
                 }else if(id == R.id.nav_schedule){
-                    try{
 
-                        // Hide "tabs" which is a "Tab Layout"
-                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
-                        tabs.setVisibility(View.GONE)
+                    if(role == "Tutor"){
+                        try{
 
-                        // Hide "content_linear_layout" which contains the "content_main"
-                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
-                        ll_2.setVisibility(View.GONE)
+                            // Hide "tabs" which is a "Tab Layout"
+                            val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                            tabs.setVisibility(View.GONE)
 
-                        // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ScheduleFragment()).commit()
+                            // Hide "content_linear_layout" which contains the "content_main"
+                            val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                            ll_2.setVisibility(View.GONE)
 
-                    }catch(e : Exception){
-                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                            // Replace fragment with SlideShow fragment
+                            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorScheduleFragment()).commit()
+
+                        }catch(e : Exception){
+                            Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                        }
+                    }else if(role == "Student"){
+                        try{
+
+                            // Hide "tabs" which is a "Tab Layout"
+                            val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                            tabs.setVisibility(View.GONE)
+
+                            // Hide "content_linear_layout" which contains the "content_main"
+                            val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                            ll_2.setVisibility(View.GONE)
+
+                            // Replace fragment with SlideShow fragment
+                            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, StudentScheduleFragment()).commit()
+
+                        }catch(e : Exception){
+                            Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                        }
                     }
+
                 }else if(id == R.id.nav_tutor_list){
                     try{
 
@@ -143,6 +167,45 @@ class MainActivity : AppCompatActivity() {
                     }catch(e : Exception){
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
+                }else if(id == R.id.nav_requests){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, SubmittedRequestsFragment()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
+                }else if(id == R.id.nav_tutor_search){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorsSearchFragment()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
+                }else if(id == R.id.nav_sign_out){
+
+                    Toast.makeText(baseContext, "Successfully signed out!", Toast.LENGTH_SHORT).show()
+
+
                 }
                 //This is for maintaining the behavior of the Navigation view
                 NavigationUI.onNavDestinationSelected(menuItem, navController)
@@ -183,7 +246,5 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-
 
 }

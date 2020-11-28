@@ -24,5 +24,17 @@
             android:id="@+id/nav_tutor_list"
             android:icon="@drawable/ic_people"
             android:title="Tutors" />
+        <item
+            android:id="@+id/nav_requests"
+            android:icon="@drawable/ic_requests"
+            android:title="Requests" />
+        <item
+            android:id="@+id/nav_tutor_search"
+            android:icon="@drawable/ic_tutor_search"
+            android:title="Search" />
+        <item
+            android:id="@+id/nav_sign_out"
+            android:icon="@drawable/ic_signout"
+            android:title="Sign Out" />
     </group>
 </menu>

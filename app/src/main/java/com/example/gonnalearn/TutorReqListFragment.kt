@@ -14,10 +14,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TutorsFragment.newInstance] factory method to
+ * Use the [TutorReqListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TutorsFragment : Fragment() {
+class TutorReqListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,9 +35,10 @@ class TutorsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val myInflater = inflater.inflate(R.layout.fragment_tutors, container, false)
+        val myInflater = inflater.inflate(R.layout.fragment_tutor_req_list, container, false)
 
-        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Tutors"
+
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Request List"
 
         return myInflater
     }
@@ -49,12 +50,12 @@ class TutorsFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment TutorsFragment.
+         * @return A new instance of fragment TutorReqListFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            TutorsFragment().apply {
+            TutorReqListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
