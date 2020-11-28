@@ -1,4 +1,3 @@
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.gonnalearn.ProfileActivity
+import com.example.gonnalearn.MainActivity
 import com.example.gonnalearn.R
 
 
@@ -24,11 +23,9 @@ class LoginFragment : Fragment() {
 
         myInflater.findViewById<Button>(R.id.signInButton).setOnClickListener {
 
-            try{
-
-                val intent = Intent(context, ProfileActivity::class.java)
-                startActivity(intent)
-
+            try {
+                
+                (activity as MainActivity?)?.AuthenticateUser()
 
             }catch(e : Exception){
                 Toast.makeText(getActivity(), "$e", Toast.LENGTH_LONG).show();

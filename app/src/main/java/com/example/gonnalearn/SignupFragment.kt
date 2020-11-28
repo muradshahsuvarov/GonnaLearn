@@ -23,7 +23,7 @@ class SignupFragment : Fragment() {
         )
 
         val spinner = myInflater.findViewById<Spinner>(R.id.roleSpinner)
-        spinner?.adapter = activity?.applicationContext?.let { ArrayAdapter(it, R.layout.support_simple_spinner_dropdown_item, roles) } as SpinnerAdapter
+            spinner?.adapter = activity?.applicationContext?.let { ArrayAdapter(it, R.layout.support_simple_spinner_dropdown_item, roles) } as SpinnerAdapter
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

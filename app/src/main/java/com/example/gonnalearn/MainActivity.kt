@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TabHost
 import android.widget.Toast
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
+            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_schedule, R.id.nav_tutor_list), drawerLayout)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -108,6 +109,40 @@ class MainActivity : AppCompatActivity() {
                     }
 
 
+                }else if(id == R.id.nav_schedule){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ScheduleFragment()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
+                }else if(id == R.id.nav_tutor_list){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorsFragment()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 //This is for maintaining the behavior of the Navigation view
                 NavigationUI.onNavDestinationSelected(menuItem, navController)
@@ -115,8 +150,27 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+
     }
 
+    fun AuthenticateUser(){
+        try{
+
+            // Hide "tabs" which is a "Tab Layout"
+            val tabs = findViewById<View>(R.id.tabs) as TabLayout
+            tabs.setVisibility(View.GONE)
+
+            // Hide "content_linear_layout" which contains the "content_main"
+            val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+            ll_2.setVisibility(View.GONE)
+
+            // Replace fragment with ProfileFragment fragment
+            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
+
+        }catch(e : Exception){
+            Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
