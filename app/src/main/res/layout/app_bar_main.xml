@@ -21,39 +21,48 @@
         <LinearLayout
             android:id="@+id/tab_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="763dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign Up" />
+                android:background="@color/white">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/signUp_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/signIn_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign In" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+
+            <LinearLayout
+                android:id="@+id/content_linear_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign In" />
+                android:orientation="vertical">
 
-        </com.google.android.material.tabs.TabLayout>
+                <include
+                    android:id="@+id/include_content_main"
+                    layout="@layout/content_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
-        android:id="@+id/content_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_main" />
-
-    </LinearLayout>
 
 
 
