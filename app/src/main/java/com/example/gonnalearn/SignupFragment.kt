@@ -76,7 +76,7 @@ class SignupFragment : Fragment() {
 
 
 
-
+    // Registering user to our GonnaLearn Database
     fun RegisterUser(email : String, password: String, fullName: String, role: String){
 
         try{
