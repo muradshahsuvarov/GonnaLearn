@@ -3,6 +3,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.gonnalearn.MainActivity
@@ -10,7 +11,7 @@ import com.example.gonnalearn.R
 
 
 // Here ":" symbol is indicate that LoginFragment
-// is child class of Fragment Class 
+// is child class of Fragment Class
 class LoginFragment : Fragment() {
 
     override fun onCreateView(
@@ -24,8 +25,9 @@ class LoginFragment : Fragment() {
         myInflater.findViewById<Button>(R.id.signInButton).setOnClickListener {
 
             try {
-                
-                (activity as MainActivity?)?.AuthenticateUser()
+                var email = myInflater.findViewById<EditText>(R.id.loginEmail).text.toString()
+                var password = myInflater.findViewById<EditText>(R.id.loginPassword).text.toString()
+                (activity as MainActivity?)?.AuthenticateUser(email,password)
 
             }catch(e : Exception){
                 Toast.makeText(getActivity(), "$e", Toast.LENGTH_LONG).show();

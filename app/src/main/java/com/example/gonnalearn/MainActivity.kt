@@ -1,6 +1,7 @@
 package com.example.gonnalearn
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,18 +12,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import androidx.viewpager.widget.ViewPager
 import com.example.gonnalearn.ui.gallery.GalleryFragment
 import com.example.gonnalearn.ui.slideshow.SlideshowFragment
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+
 
     var role : String? = "Tutor" // Role of the authenticated user
 
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_schedule, R.id.nav_tutor_list,
-        R.id.nav_requests, R.id.nav_tutor_search, R.id.nav_sign_out), drawerLayout)
+            R.id.nav_requests, R.id.nav_tutor_search, R.id.nav_sign_out), drawerLayout)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -216,8 +222,32 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun AuthenticateUser(){
+    fun RegisterUser(email : String, password: String, fullName: String, role: String){
+
         try{
+
+            // Inserting user into the database
+            if(insertUserToDatabase(email, password, fullName, role) == true){
+                // Authenticating User
+                AuthenticateUser(email, password)
+            }
+
+
+
+        }catch(e : Exception){
+            Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+
+    fun AuthenticateUser(email : String, password: String){
+
+        try{
+
+            // TODO: Check if there is such user in the database
+            // TODO: If there is , then send his data to the ProfileFragment and replace
+            // TODO: Else , then pop up a message about unexisting user
 
             // Hide "tabs" which is a "Tab Layout"
             val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -235,6 +265,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun insertUserToDatabase(email : String, password : String, fullName : String,
+                                     role : String) : Boolean{
+
+        try{
+
+            if(InputCheck(email,password,fullName, role)){
+
+                // TODO: Insert user object into real database
+
+                Toast.makeText(baseContext, "User successfully created! role=$role", Toast.LENGTH_SHORT).show()
+                return true
+            }else{
+                Toast.makeText(baseContext, "Please fill out all fields!", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }catch(e : Exception){
+            Toast.makeText(baseContext, "ERROR: + $e", Toast.LENGTH_SHORT).show()
+        }
+
+        return false
+    }
+
+    private fun InputCheck(email : String, password : String, fullName : String,
+                           role : String) : Boolean{
+
+        if(TextUtils.isEmpty(email) == false &&
+            TextUtils.isEmpty(password) == false &&
+            TextUtils.isEmpty(role) == false){
+
+            return true
+
+        }
+
+        return false
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

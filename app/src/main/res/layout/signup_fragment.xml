@@ -11,7 +11,7 @@
 
 
     <EditText
-        android:id="@+id/fullNameText"
+        android:id="@+id/signUpFullName"
         android:layout_width="265dp"
         android:layout_height="48dp"
         android:ems="10"
@@ -37,7 +37,7 @@
         app:layout_constraintVertical_bias="0.788" />
 
     <EditText
-        android:id="@+id/editTextTextPassword2"
+        android:id="@+id/signUpRepeatedPassword"
         android:layout_width="265dp"
         android:layout_height="48dp"
         android:ems="10"
@@ -50,7 +50,7 @@
         app:layout_constraintVertical_bias="0.606" />
 
     <Spinner
-        android:id="@+id/roleSpinner"
+        android:id="@+id/signUpRoleSpinner"
         android:layout_width="265dp"
         android:layout_height="48dp"
         android:hint="Role"
@@ -61,7 +61,7 @@
         app:layout_constraintVertical_bias="0.368" />
 
     <EditText
-        android:id="@+id/emailText"
+        android:id="@+id/signUpEmail"
         android:layout_width="265dp"
         android:layout_height="48dp"
         android:ems="10"
@@ -74,7 +74,7 @@
         app:layout_constraintVertical_bias="0.229" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/signUpPassword"
         android:layout_width="265dp"
         android:layout_height="48dp"
         android:ems="10"
