@@ -222,25 +222,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun RegisterUser(email : String, password: String, fullName: String, role: String){
-
-        try{
-
-            // Inserting user into the database
-            if(insertUserToDatabase(email, password, fullName, role) == true){
-                // Authenticating User
-                AuthenticateUser(email, password)
-            }
-
-
-
-        }catch(e : Exception){
-            Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
-        }
-
-    }
-
-
     fun AuthenticateUser(email : String, password: String){
 
         try{
@@ -265,41 +246,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertUserToDatabase(email : String, password : String, fullName : String,
-                                     role : String) : Boolean{
 
-        try{
-
-            if(InputCheck(email,password,fullName, role)){
-
-                // TODO: Insert user object into real database
-
-                Toast.makeText(baseContext, "User successfully created! role=$role", Toast.LENGTH_SHORT).show()
-                return true
-            }else{
-                Toast.makeText(baseContext, "Please fill out all fields!", Toast.LENGTH_SHORT).show()
-                return false
-            }
-        }catch(e : Exception){
-            Toast.makeText(baseContext, "ERROR: + $e", Toast.LENGTH_SHORT).show()
-        }
-
-        return false
-    }
-
-    private fun InputCheck(email : String, password : String, fullName : String,
-                           role : String) : Boolean{
-
-        if(TextUtils.isEmpty(email) == false &&
-            TextUtils.isEmpty(password) == false &&
-            TextUtils.isEmpty(role) == false){
-
-            return true
-
-        }
-
-        return false
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
