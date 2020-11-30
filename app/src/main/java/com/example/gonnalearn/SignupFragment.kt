@@ -57,7 +57,7 @@ class SignupFragment : Fragment() {
                 var signUpRoleSpinner = myInflater.findViewById<Spinner>(R.id.signUpRoleSpinner).selectedItem.toString()
 
 
-                // Calling authenticating user
+                // Registering User
                 RegisterUser(
                     signUpEmail,
                     signUpPassword,
