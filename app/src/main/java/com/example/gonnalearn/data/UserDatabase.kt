@@ -6,10 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // Contains database folder
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Event::class], version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase(){
 
     abstract fun userDao(): UserDao
+
+    abstract fun eventDao(): EventDao
 
     companion object{
         @Volatile

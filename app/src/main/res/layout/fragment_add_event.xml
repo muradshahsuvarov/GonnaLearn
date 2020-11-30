@@ -7,7 +7,7 @@
     tools:context=".AddEvent">
 
     <EditText
-        android:id="@+id/eventTitle"
+        android:id="@+id/addEventTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.176" />
 
     <EditText
-        android:id="@+id/eventDescription"
+        android:id="@+id/addEventDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.299" />
 
     <Button
-        android:id="@+id/eventStartDate"
+        android:id="@+id/addEventStartDate"
         android:layout_width="208dp"
         android:layout_height="55dp"
         android:text="Start Date"
@@ -45,7 +45,7 @@
         app:layout_constraintVertical_bias="0.428" />
 
     <Button
-        android:id="@+id/eventEndDate"
+        android:id="@+id/addEventEndDate"
         android:layout_width="208dp"
         android:layout_height="55dp"
         android:text="End Date"
@@ -58,8 +58,8 @@
 
     <Button
         android:id="@+id/addEventButton"
-        android:layout_width="111dp"
-        android:layout_height="53dp"
+        android:layout_width="150dp"
+        android:layout_height="78dp"
         android:text="Add Event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

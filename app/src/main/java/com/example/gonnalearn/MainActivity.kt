@@ -17,6 +17,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import androidx.viewpager.widget.ViewPager
+import com.example.gonnalearn.data.Event
+import com.example.gonnalearn.data.EventViewModel
 import com.example.gonnalearn.data.User
 import com.example.gonnalearn.details.DetailsFragment
 import com.example.gonnalearn.ui.gallery.GalleryFragment
@@ -31,12 +33,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private lateinit var mEventViewModel: EventViewModel
+
     var role : String? = "Tutor" // Role of the authenticated user
 
     companion object{
 
         // Check whether to save the user session or not
         var userRemembered : Boolean = false
+
+        // Can be used to check whether user authenticated or not
         var rememberedUser : User? = null
 
     }
@@ -55,6 +61,8 @@ class MainActivity : AppCompatActivity() {
         val tabPagerAdapter : tabPagerAdapter = tabPagerAdapter(supportFragmentManager)
         Pager.adapter = tabPagerAdapter
         tabLayout.setupWithViewPager(Pager)
+
+        mEventViewModel = ViewModelProvider(this).get(EventViewModel::class.java)
 
         // Added by me
 
@@ -197,6 +205,57 @@ class MainActivity : AppCompatActivity() {
                     }catch(e : Exception){
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
+                }else if(id == R.id.nav_add_event){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, AddEvent()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
+                }else if(id == R.id.nav_events){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, EventFragment()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
+                }else if(id == R.id.nav_student_events){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, StudentEventFragment()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
                 }else if(id == R.id.nav_requests){
                     try{
 
@@ -246,6 +305,53 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    fun requestEvent(event : Event){
+
+        // Create event object
+        var updatedEvent = Event(
+            event.id,
+            event.title,
+            event.description,
+            event.start_date,
+            event.end_date,
+            event.userId,
+            event.subscriberEmail,
+            "PENDING"
+        )
+
+        // Update event
+        mEventViewModel.updateEvent(updatedEvent)
+
+    }
+
+    fun acceptEvent(event : Event, userEmail : String){
+
+        var updatedEvent = Event(
+            event.id,
+            event.title,
+            event.description,
+            event.start_date,
+            event.end_date,
+            event.userId,
+            userEmail,
+            "ACCEPTED"
+        )
+    }
+
+    fun rejectEvent(event : Event, userEmail : String){
+
+        var updatedEvent = Event(
+            event.id,
+            event.title,
+            event.description,
+            event.start_date,
+            event.end_date,
+            event.userId,
+            "",
+            "AVAILABLE"
+        )
     }
 
     fun AuthenticateUser(email : String, password: String){
