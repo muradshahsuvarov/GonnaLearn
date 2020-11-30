@@ -17,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import androidx.viewpager.widget.ViewPager
+import com.example.gonnalearn.details.DetailsFragment
 import com.example.gonnalearn.ui.gallery.GalleryFragment
 import com.example.gonnalearn.ui.slideshow.SlideshowFragment
 import com.google.android.material.navigation.NavigationView
@@ -240,6 +241,25 @@ class MainActivity : AppCompatActivity() {
 
             // Replace fragment with ProfileFragment fragment
             supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
+
+        }catch(e : Exception){
+            Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun ShowTutorDetails(){
+        try{
+
+            // Hide "tabs" which is a "Tab Layout"
+            val tabs = findViewById<View>(R.id.tabs) as TabLayout
+            tabs.setVisibility(View.GONE)
+
+            // Hide "content_linear_layout" which contains the "content_main"
+            val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+            ll_2.setVisibility(View.GONE)
+
+            // Replace fragment with ProfileFragment fragment
+            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, DetailsFragment()).commit()
 
         }catch(e : Exception){
             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
