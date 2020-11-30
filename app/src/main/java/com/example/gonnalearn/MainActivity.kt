@@ -17,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import androidx.viewpager.widget.ViewPager
+import com.example.gonnalearn.data.User
 import com.example.gonnalearn.details.DetailsFragment
 import com.example.gonnalearn.ui.gallery.GalleryFragment
 import com.example.gonnalearn.ui.slideshow.SlideshowFragment
@@ -30,8 +31,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-
     var role : String? = "Tutor" // Role of the authenticated user
+
+    companion object{
+
+        // Check whether to save the user session or not
+        var userRemembered : Boolean = false
+        var rememberedUser : User? = null
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
                 val id: Int = menuItem.getItemId()
                 //it's possible to do more actions on several items, if there is a large amount of items I prefer switch(){case} instead of if()
-                if (id == R.id.nav_home) {
+                if (id == R.id.nav_home && !userRemembered) {
 
                     // Hide "tabs" which is a "Tab Layout"
                     val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -77,6 +86,20 @@ class MainActivity : AppCompatActivity() {
                     val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
                     ll_2.setVisibility(View.VISIBLE)
 
+
+                }else if (id == R.id.nav_home && userRemembered) {
+
+                    // Hide "tabs" which is a "Tab Layout"
+                    val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                    tabs.setVisibility(View.GONE)
+
+                    // Hide "content_linear_layout" which contains the "content_main"
+                    val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                    ll_2.setVisibility(View.GONE)
+
+
+                    // Replace fragment with ProfileFragment fragment
+                    supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
 
                 }else if(id == R.id.nav_gallery){
 
@@ -210,6 +233,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }else if(id == R.id.nav_sign_out){
 
+                    userRemembered = false
+                    rememberedUser = null
                     Toast.makeText(baseContext, "Successfully signed out!", Toast.LENGTH_SHORT).show()
 
 
@@ -227,10 +252,6 @@ class MainActivity : AppCompatActivity() {
 
         try{
 
-            // TODO: Check if there is such user in the database
-            // TODO: If there is , then send his data to the ProfileFragment and replace
-            // TODO: Else , then pop up a message about unexisting user
-
             // Hide "tabs" which is a "Tab Layout"
             val tabs = findViewById<View>(R.id.tabs) as TabLayout
             tabs.setVisibility(View.GONE)
@@ -241,25 +262,6 @@ class MainActivity : AppCompatActivity() {
 
             // Replace fragment with ProfileFragment fragment
             supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
-
-        }catch(e : Exception){
-            Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    fun ShowTutorDetails(){
-        try{
-
-            // Hide "tabs" which is a "Tab Layout"
-            val tabs = findViewById<View>(R.id.tabs) as TabLayout
-            tabs.setVisibility(View.GONE)
-
-            // Hide "content_linear_layout" which contains the "content_main"
-            val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
-            ll_2.setVisibility(View.GONE)
-
-            // Replace fragment with ProfileFragment fragment
-            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, DetailsFragment()).commit()
 
         }catch(e : Exception){
             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()

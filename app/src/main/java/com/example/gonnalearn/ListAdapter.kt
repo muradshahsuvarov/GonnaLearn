@@ -59,7 +59,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.TutorViewHolder>() {
                 DetailsFragment.fullName = curItem.fullName
                 DetailsFragment.role = curItem.role
                 DetailsFragment.dateOfBirth = curItem.dateOfBirth
-                
+
                 (holder.itemView.context as FragmentActivity).supportFragmentManager.beginTransaction()
                     .replace(R.id.tab_linear_layout, DetailsFragment())
                     .commit()

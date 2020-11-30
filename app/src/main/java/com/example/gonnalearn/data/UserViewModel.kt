@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 
 // is needed to provide data to the UI
 class UserViewModel(application: Application) : AndroidViewModel(application) {
+
      val readAllData: LiveData<List<User>>
      val repository: UserRepository
 
