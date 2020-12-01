@@ -70,8 +70,8 @@ class TutorReqListAdapter : RecyclerView.Adapter<TutorReqListAdapter.TutorReqLis
 
 
 
+            // ACCEPT BUTTON ON CLICK LISTENER
                 holder.itemView.customTutorReqAcceptButton.setOnClickListener {
-                    Toast.makeText(holder.itemView.context, "${curItem.status}", Toast.LENGTH_SHORT).show()
 
                     if (curItem.status == "PENDING") {
                         (holder.itemView.context as MainActivity?)?.acceptEvent(curItem, curItem.subscriberEmail)
@@ -79,6 +79,7 @@ class TutorReqListAdapter : RecyclerView.Adapter<TutorReqListAdapter.TutorReqLis
                     }
                 }
 
+            // REJECT BUTTON ON CLICK LISTENER
             holder.itemView.customTutorReqRejectButton.setOnClickListener {
 
                 if (curItem.status == "PENDING") {

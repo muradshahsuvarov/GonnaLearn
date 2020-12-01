@@ -18,6 +18,7 @@ import com.example.gonnalearn.data.Event
 import com.example.gonnalearn.data.EventViewModel
 import com.example.gonnalearn.data.User
 import com.example.gonnalearn.ui.gallery.GalleryFragment
+import com.example.gonnalearn.ui.home.HomeFragment
 import com.example.gonnalearn.ui.slideshow.SlideshowFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var mEventViewModel: EventViewModel
+
+    private lateinit var menu : Menu
 
     var role : String? = "Tutor" // Role of the authenticated user
 
@@ -77,6 +80,86 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         navView.setupWithNavController(navController)
+
+        menu = navView.menu
+
+        if(rememberedUser != null){
+
+            if(rememberedUser?.role == "Tutor"){
+
+                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+                nav_slideshow_view.isVisible = false
+
+                val nav_schedule_view = menu.findItem(R.id.nav_schedule)
+                nav_schedule_view.isVisible = false
+
+                val nav_student_events_view = menu.findItem(R.id.nav_student_events)
+                nav_student_events_view.isVisible = false
+
+                val nav_requests_view = menu.findItem(R.id.nav_requests)
+                nav_requests_view.isVisible = false
+
+                val nav_search_view = menu.findItem(R.id.nav_tutor_search)
+                nav_search_view.isVisible = false
+
+            }else if(rememberedUser?.role == "Student"){
+
+                val nav_gallery_view = menu.findItem(R.id.nav_gallery)
+                nav_gallery_view.isVisible = false
+
+                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+                nav_slideshow_view.isVisible = false
+
+                val nav_schedule_view = menu.findItem(R.id.nav_schedule)
+                nav_schedule_view.isVisible = false
+
+                val nav_tutor_requests_view = menu.findItem(R.id.nav_tutor_requests)
+                nav_tutor_requests_view.isVisible = false
+
+                val nav_tutor_add_event_view = menu.findItem(R.id.nav_add_event)
+                nav_tutor_add_event_view.isVisible = false
+
+            }
+
+        }else{
+
+            val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+            nav_slideshow_view.isVisible = false
+
+            val nav_schedule_view = menu.findItem(R.id.nav_schedule)
+            nav_schedule_view.isVisible = false
+
+            val nav_student_events_view = menu.findItem(R.id.nav_student_events)
+            nav_student_events_view.isVisible = false
+
+            val nav_requests_view = menu.findItem(R.id.nav_requests)
+            nav_requests_view.isVisible = false
+
+            val nav_search_view = menu.findItem(R.id.nav_tutor_search)
+            nav_search_view.isVisible = false
+
+            val nav_gallery_view = menu.findItem(R.id.nav_gallery)
+            nav_gallery_view.isVisible = false
+
+
+            val nav_tutor_requests_view = menu.findItem(R.id.nav_tutor_requests)
+            nav_tutor_requests_view.isVisible = false
+
+            val nav_tutor_add_event_view = menu.findItem(R.id.nav_add_event)
+            nav_tutor_add_event_view.isVisible = false
+
+            val nav_tutor_events_event_view = menu.findItem(R.id.nav_events)
+            nav_tutor_events_event_view.isVisible = false
+
+            val nav_tutors_view = menu.findItem(R.id.nav_tutor_list)
+            nav_tutors_view.isVisible = false
+
+            val nav_signout_view = menu.findItem(R.id.nav_sign_out)
+            nav_signout_view.isVisible = false
+
+        }
+
+
 
         // Navigation drawer items' event click listeners
         navView.setNavigationItemSelectedListener(object : NavigationView.OnNavigationItemSelectedListener {
@@ -310,6 +393,10 @@ class MainActivity : AppCompatActivity() {
 
                     userRemembered = false
                     rememberedUser = null
+
+                    // Reset Navigation Item Views  ( Hide them ) and go to home page
+                    ResetPage()
+
                     Toast.makeText(baseContext, "Successfully signed out!", Toast.LENGTH_SHORT).show()
 
 
@@ -376,6 +463,50 @@ class MainActivity : AppCompatActivity() {
         mEventViewModel.updateEvent(updatedEvent)
     }
 
+    fun ResetPage(){
+
+        val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+        nav_slideshow_view.isVisible = false
+
+        val nav_schedule_view = menu.findItem(R.id.nav_schedule)
+        nav_schedule_view.isVisible = false
+
+        val nav_student_events_view = menu.findItem(R.id.nav_student_events)
+        nav_student_events_view.isVisible = false
+
+        val nav_requests_view = menu.findItem(R.id.nav_requests)
+        nav_requests_view.isVisible = false
+
+        val nav_search_view = menu.findItem(R.id.nav_tutor_search)
+        nav_search_view.isVisible = false
+
+        val nav_gallery_view = menu.findItem(R.id.nav_gallery)
+        nav_gallery_view.isVisible = false
+
+
+        val nav_tutor_requests_view = menu.findItem(R.id.nav_tutor_requests)
+        nav_tutor_requests_view.isVisible = false
+
+        val nav_tutor_add_event_view = menu.findItem(R.id.nav_add_event)
+        nav_tutor_add_event_view.isVisible = false
+
+        val nav_signout_view = menu.findItem(R.id.nav_sign_out)
+        nav_signout_view.isVisible = false
+
+
+        // Replace fragment with SlideShow fragment
+        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, HomeFragment()).commit()
+
+        // Hide "tabs" which is a "Tab Layout"
+        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+        tabs.setVisibility(View.VISIBLE)
+
+        // Hide "content_linear_layout" which contains the "content_main"
+        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+        ll_2.setVisibility(View.VISIBLE)
+
+    }
+
     fun AuthenticateUser(){
 
         try{
@@ -387,6 +518,45 @@ class MainActivity : AppCompatActivity() {
             // Hide "content_linear_layout" which contains the "content_main"
             val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
             ll_2.setVisibility(View.GONE)
+
+            if(ProfileFragment.role == "Student"){
+
+                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+                nav_slideshow_view.isVisible = true
+
+                val nav_schedule_view = menu.findItem(R.id.nav_schedule)
+                nav_schedule_view.isVisible = true
+
+                val nav_student_events_view = menu.findItem(R.id.nav_student_events)
+                nav_student_events_view.isVisible = true
+
+                val nav_requests_view = menu.findItem(R.id.nav_requests)
+                nav_requests_view.isVisible = true
+
+                val nav_search_view = menu.findItem(R.id.nav_tutor_search)
+                nav_search_view.isVisible = true
+
+                val nav_signout_view = menu.findItem(R.id.nav_sign_out)
+                nav_signout_view.isVisible = true
+
+            }else if(ProfileFragment.role == "Tutor"){
+
+                val nav_gallery_view = menu.findItem(R.id.nav_gallery)
+                nav_gallery_view.isVisible = true
+
+                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+                nav_slideshow_view.isVisible = true
+
+                val nav_tutor_requests_view = menu.findItem(R.id.nav_tutor_requests)
+                nav_tutor_requests_view.isVisible = true
+
+                val nav_tutor_add_event_view = menu.findItem(R.id.nav_add_event)
+                nav_tutor_add_event_view.isVisible = true
+
+                val nav_signout_view = menu.findItem(R.id.nav_sign_out)
+                nav_signout_view.isVisible = true
+
+            }
 
             // Replace fragment with ProfileFragment fragment
             supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
