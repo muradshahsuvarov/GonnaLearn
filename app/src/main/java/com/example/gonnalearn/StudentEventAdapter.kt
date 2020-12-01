@@ -58,25 +58,44 @@ class StudentEventAdapter : RecyclerView.Adapter<StudentEventAdapter.StudentEven
 
             var curItem = studentEventList[position]
 
-            // If the userId of the user is the id of the authenticated user , then show his events
+
+
+                // If the userId of the user is the id of the authenticated user , then show his events
                 holder.itemView.customStudentEventPic.setBackgroundResource(R.drawable.ic_event)
                 holder.itemView.customStudentEventTitle.text = curItem.title
                 holder.itemView.customStudentEventDescription.text = curItem.description
                 holder.itemView.customStudentEventStartDate.text = curItem.start_date
                 holder.itemView.customStudentEventEndDate.text = curItem.end_date
 
-            if(curItem.status == "AVAILABLE"){
-                holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_event)
-            }else if(curItem.status == "PENDING"){
-                holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_event_added)
-            }
+            // If the requested event is not requested by you and otherwise
+            if(curItem.status != "AVAILABLE"){
 
-            holder.itemView.studentEventApplyButton.setOnClickListener{
-                //TODO: Change the status of the event to "PENDING" in the database
-                (holder.itemView.context as MainActivity?)?.requestEvent(curItem)
-                holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_event_added)
-                Toast.makeText(holder.itemView.context, "Event ${curItem.title} requested", Toast.LENGTH_SHORT).show()
-            }
+                holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_not_available)
+
+            }else if(curItem.status == "AVAILABLE"){
+                    holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_add_event)
+                }else if(curItem.status == "PENDING"){
+                    holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_event_added)
+                }
+
+
+                holder.itemView.studentEventApplyButton.setOnClickListener {
+                    //TODO: Change the status of the event to "PENDING" in the database if it is available
+                    if (curItem.status == "PENDING") {
+                        (holder.itemView.context as MainActivity?)?.rejectEvent(curItem)
+                        holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_add_event)
+                    } else if (curItem.status == "AVAILABLE") {
+                        MainActivity.rememberedUser?.let { it1 -> (holder.itemView.context as MainActivity?)?.requestEvent(curItem, it1.email) }
+                        holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_event_added)
+                    }
+
+
+                    holder.itemView.studentEventApplyButton.setImageResource(R.drawable.ic_event_added)
+                    Toast.makeText(holder.itemView.context, "Event ${curItem.title} requested", Toast.LENGTH_SHORT).show()
+                }
+
+
+
 
         }catch(e : Exception){
 

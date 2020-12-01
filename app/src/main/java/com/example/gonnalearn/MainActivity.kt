@@ -273,6 +273,23 @@ class MainActivity : AppCompatActivity() {
                     }catch(e : Exception){
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
+                }else if(id == R.id.nav_tutor_requests){
+                    try{
+
+                        // Hide "tabs" which is a "Tab Layout"
+                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                        tabs.setVisibility(View.GONE)
+
+                        // Hide "content_linear_layout" which contains the "content_main"
+                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                        ll_2.setVisibility(View.GONE)
+
+                        // Replace fragment with SlideShow fragment
+                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorReqListFragment()).commit()
+
+                    }catch(e : Exception){
+                        Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
+                    }
                 }else if(id == R.id.nav_tutor_search){
                     try{
 
@@ -307,7 +324,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun requestEvent(event : Event){
+    fun requestEvent(event : Event, userEmail : String){
 
         // Create event object
         var updatedEvent = Event(
@@ -317,7 +334,7 @@ class MainActivity : AppCompatActivity() {
             event.start_date,
             event.end_date,
             event.userId,
-            event.subscriberEmail,
+                userEmail,
             "PENDING"
         )
 
@@ -338,9 +355,12 @@ class MainActivity : AppCompatActivity() {
             userEmail,
             "ACCEPTED"
         )
+
+        // Update event
+        mEventViewModel.updateEvent(updatedEvent)
     }
 
-    fun rejectEvent(event : Event, userEmail : String){
+    fun rejectEvent(event : Event){
 
         var updatedEvent = Event(
             event.id,
@@ -352,6 +372,9 @@ class MainActivity : AppCompatActivity() {
             "",
             "AVAILABLE"
         )
+
+        // Update event
+        mEventViewModel.updateEvent(updatedEvent)
     }
 
     fun AuthenticateUser(email : String, password: String){

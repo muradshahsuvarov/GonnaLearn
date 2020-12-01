@@ -10,13 +10,13 @@ import java.sql.Date
 @Entity(tableName = "events_table")
 data class Event (
         @PrimaryKey(autoGenerate = true)
-        val id: Int,
-        val title : String,
-        val description : String,
-        val start_date : String,
-        val end_date : String,
-        val userId : Int,
-        val subscriberEmail : String,
-        val status : String
+        var id: Int,
+        var title : String,
+        var description : String,
+        var start_date : String,
+        var end_date : String,
+        var userId : Int,
+        var subscriberEmail : String,
+        var status : String
 
     ) : Parcelable

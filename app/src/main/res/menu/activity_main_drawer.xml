@@ -37,6 +37,10 @@
             android:icon="@drawable/ic_events"
             android:title="Student Events" />
         <item
+            android:id="@+id/nav_tutor_requests"
+            android:icon="@drawable/ic_events"
+            android:title="Tutor Requests" />
+        <item
             android:id="@+id/nav_requests"
             android:icon="@drawable/ic_requests"
             android:title="Requests" />
