@@ -18,13 +18,13 @@
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/slideshowFragment"
         android:name="com.example.gonnalearn.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.gonnalearn.Profile"
+        android:name="com.example.gonnalearn.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_layout"/>
     <fragment

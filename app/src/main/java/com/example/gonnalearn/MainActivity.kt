@@ -1,7 +1,13 @@
 package com.example.gonnalearn
 
-import android.content.SharedPreferences.Editor
+import android.app.Activity
+import android.app.PendingIntent.getActivity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.text.InputFilter
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +27,9 @@ import com.example.gonnalearn.ui.gallery.GalleryFragment
 import com.example.gonnalearn.ui.home.HomeFragment
 import com.example.gonnalearn.ui.slideshow.SlideshowFragment
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.fragment_gallery.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     var role : String? = "Tutor" // Role of the authenticated user
 
 
+
     companion object{
 
         // Check whether to save the user session or not
@@ -42,6 +51,8 @@ class MainActivity : AppCompatActivity() {
 
         // Can be used to check whether user authenticated or not
         var rememberedUser : User? = null
+
+        private const val REQ_CODE = 201 // NEED TO REFER TO THIS NUM
 
     }
 
@@ -73,9 +84,18 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_schedule, R.id.nav_tutor_list,
-                R.id.nav_requests, R.id.nav_tutor_search, R.id.nav_sign_out), drawerLayout)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home,
+                R.id.nav_gallery,
+                R.id.nav_slide_show,
+                R.id.nav_schedule,
+                R.id.nav_tutor_list,
+                R.id.nav_requests,
+                R.id.nav_tutor_search,
+                R.id.nav_sign_out
+            ), drawerLayout
+        )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -87,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 
             if(rememberedUser?.role == "Tutor"){
 
-                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+                val nav_slideshow_view = menu.findItem(R.id.nav_slide_show)
                 nav_slideshow_view.isVisible = false
 
                 val nav_schedule_view = menu.findItem(R.id.nav_schedule)
@@ -102,12 +122,13 @@ class MainActivity : AppCompatActivity() {
                 val nav_search_view = menu.findItem(R.id.nav_tutor_search)
                 nav_search_view.isVisible = false
 
+
             }else if(rememberedUser?.role == "Student"){
 
                 val nav_gallery_view = menu.findItem(R.id.nav_gallery)
                 nav_gallery_view.isVisible = false
 
-                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+                val nav_slideshow_view = menu.findItem(R.id.nav_slide_show)
                 nav_slideshow_view.isVisible = false
 
                 val nav_schedule_view = menu.findItem(R.id.nav_schedule)
@@ -123,7 +144,7 @@ class MainActivity : AppCompatActivity() {
 
         }else{
 
-            val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+            val nav_slideshow_view = menu.findItem(R.id.nav_slide_show)
             nav_slideshow_view.isVisible = false
 
             val nav_schedule_view = menu.findItem(R.id.nav_schedule)
@@ -162,7 +183,8 @@ class MainActivity : AppCompatActivity() {
 
 
         // Navigation drawer items' event click listeners
-        navView.setNavigationItemSelectedListener(object : NavigationView.OnNavigationItemSelectedListener {
+        navView.setNavigationItemSelectedListener(object :
+            NavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
                 val id: Int = menuItem.getItemId()
                 //it's possible to do more actions on several items, if there is a large amount of items I prefer switch(){case} instead of if()
@@ -189,30 +211,30 @@ class MainActivity : AppCompatActivity() {
 
 
                     // Replace fragment with ProfileFragment fragment
-                    supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.tab_linear_layout,
+                        ProfileFragment()
+                    ).commit()
 
                 } else if (id == R.id.nav_gallery) {
 
-                    try {
+                    // Hide "tabs" which is a "Tab Layout"
+                    val tabs = findViewById<View>(R.id.tabs) as TabLayout
+                    tabs.setVisibility(View.GONE)
 
-                        // Hide "tabs" which is a "Tab Layout"
-                        val tabs = findViewById<View>(R.id.tabs) as TabLayout
-                        tabs.setVisibility(View.GONE)
-
-                        // Hide "content_linear_layout" which contains the "content_main"
-                        val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
-                        ll_2.setVisibility(View.GONE)
+                    // Hide "content_linear_layout" which contains the "content_main"
+                    val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                    ll_2.setVisibility(View.GONE)
 
 
-                        // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, GalleryFragment()).commit()
+                    // Replace fragment with ProfileFragment fragment
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.tab_linear_layout,
+                        GalleryFragment()
+                    ).commit()
 
-                    } catch (e: Exception) {
-                        Toast.makeText(baseContext, "Hi there! This is a Toast.", Toast.LENGTH_SHORT).show()
-                    }
 
-
-                } else if (id == R.id.nav_slideshow) {
+                } else if (id == R.id.nav_slide_show) {
 
                     try {
 
@@ -225,7 +247,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, SlideshowFragment()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            SlideshowFragment()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -242,11 +267,15 @@ class MainActivity : AppCompatActivity() {
                             tabs.setVisibility(View.GONE)
 
                             // Hide "content_linear_layout" which contains the "content_main"
-                            val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                            val ll_2 =
+                                findViewById<View>(R.id.content_linear_layout) as LinearLayout
                             ll_2.setVisibility(View.GONE)
 
                             // Replace fragment with SlideShow fragment
-                            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorScheduleFragment()).commit()
+                            supportFragmentManager.beginTransaction().replace(
+                                R.id.tab_linear_layout,
+                                TutorScheduleFragment()
+                            ).commit()
 
                         } catch (e: Exception) {
                             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -259,11 +288,15 @@ class MainActivity : AppCompatActivity() {
                             tabs.setVisibility(View.GONE)
 
                             // Hide "content_linear_layout" which contains the "content_main"
-                            val ll_2 = findViewById<View>(R.id.content_linear_layout) as LinearLayout
+                            val ll_2 =
+                                findViewById<View>(R.id.content_linear_layout) as LinearLayout
                             ll_2.setVisibility(View.GONE)
 
                             // Replace fragment with SlideShow fragment
-                            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, StudentScheduleFragment()).commit()
+                            supportFragmentManager.beginTransaction().replace(
+                                R.id.tab_linear_layout,
+                                StudentScheduleFragment()
+                            ).commit()
 
                         } catch (e: Exception) {
                             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -282,7 +315,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorsFragment()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            TutorsFragment()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -299,7 +335,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, AddEvent()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            AddEvent()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -316,7 +355,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, EventFragment()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            EventFragment()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -333,7 +375,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, StudentEventFragment()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            StudentEventFragment()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -350,7 +395,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, SubmittedRequestsFragment()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            SubmittedRequestsFragment()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -367,7 +415,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorReqListFragment()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            TutorReqListFragment()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -384,7 +435,10 @@ class MainActivity : AppCompatActivity() {
                         ll_2.setVisibility(View.GONE)
 
                         // Replace fragment with SlideShow fragment
-                        supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorsSearchFragment()).commit()
+                        supportFragmentManager.beginTransaction().replace(
+                            R.id.tab_linear_layout,
+                            TutorsSearchFragment()
+                        ).commit()
 
                     } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
@@ -397,7 +451,8 @@ class MainActivity : AppCompatActivity() {
                     // Reset Navigation Item Views  ( Hide them ) and go to home page
                     ResetPage()
 
-                    Toast.makeText(baseContext, "Successfully signed out!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Successfully signed out!", Toast.LENGTH_SHORT)
+                        .show()
 
 
                 }
@@ -410,18 +465,29 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if(requestCode == REQ_CODE && resultCode == Activity.RESULT_OK)
+        {
+            var img = data?.extras?.get("data") as Bitmap
+            takenImageView.setImageBitmap(img)
+        }else{
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     fun requestEvent(event: Event, userEmail: String){
 
         // Create event object
         var updatedEvent = Event(
-                event.id,
-                event.title,
-                event.description,
-                event.start_date,
-                event.end_date,
-                event.userId,
-                userEmail,
-                "PENDING"
+            event.id,
+            event.title,
+            event.description,
+            event.start_date,
+            event.end_date,
+            event.userId,
+            userEmail,
+            "PENDING"
         )
 
         // Update event
@@ -432,14 +498,14 @@ class MainActivity : AppCompatActivity() {
     fun acceptEvent(event: Event, userEmail: String){
 
         var updatedEvent = Event(
-                event.id,
-                event.title,
-                event.description,
-                event.start_date,
-                event.end_date,
-                event.userId,
-                userEmail,
-                "ACCEPTED"
+            event.id,
+            event.title,
+            event.description,
+            event.start_date,
+            event.end_date,
+            event.userId,
+            userEmail,
+            "ACCEPTED"
         )
 
         // Update event
@@ -449,14 +515,14 @@ class MainActivity : AppCompatActivity() {
     fun rejectEvent(event: Event){
 
         var updatedEvent = Event(
-                event.id,
-                event.title,
-                event.description,
-                event.start_date,
-                event.end_date,
-                event.userId,
-                "",
-                "AVAILABLE"
+            event.id,
+            event.title,
+            event.description,
+            event.start_date,
+            event.end_date,
+            event.userId,
+            "",
+            "AVAILABLE"
         )
 
         // Update event
@@ -465,7 +531,7 @@ class MainActivity : AppCompatActivity() {
 
     fun ResetPage(){
 
-        val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
+        val nav_slideshow_view = menu.findItem(R.id.nav_slide_show)
         nav_slideshow_view.isVisible = false
 
         val nav_schedule_view = menu.findItem(R.id.nav_schedule)
@@ -521,8 +587,8 @@ class MainActivity : AppCompatActivity() {
 
             if(ProfileFragment.role == "Student"){
 
-                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
-                nav_slideshow_view.isVisible = true
+                val nav_slideshow_view = menu.findItem(R.id.nav_slide_show)
+                nav_slideshow_view.isVisible = false
 
                 val nav_schedule_view = menu.findItem(R.id.nav_schedule)
                 nav_schedule_view.isVisible = true
@@ -544,8 +610,8 @@ class MainActivity : AppCompatActivity() {
                 val nav_gallery_view = menu.findItem(R.id.nav_gallery)
                 nav_gallery_view.isVisible = true
 
-                val nav_slideshow_view = menu.findItem(R.id.nav_slideshow)
-                nav_slideshow_view.isVisible = true
+                val nav_slideshow_view = menu.findItem(R.id.nav_slide_show)
+                nav_slideshow_view.isVisible = false
 
                 val nav_tutor_requests_view = menu.findItem(R.id.nav_tutor_requests)
                 nav_tutor_requests_view.isVisible = true
@@ -559,7 +625,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Replace fragment with ProfileFragment fragment
-            supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
+            supportFragmentManager.beginTransaction().replace(
+                R.id.tab_linear_layout,
+                ProfileFragment()
+            ).commit()
 
         }catch (e: Exception){
             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
