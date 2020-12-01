@@ -8,19 +8,12 @@
         android:id="@+id/tutorsFragment"
         android:name="com.example.gonnalearn.TutorsFragment"
         android:label="fragment_tutors"
-        tools:layout="@layout/fragment_tutors" >
-        <action
-            android:id="@+id/action_tutorsFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_tutors" />
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.gonnalearn.details.DetailsFragment"
         android:label="Details"
         tools:layout="@layout/fragment_details" >
-        <action
-            android:id="@+id/action_detailsFragment_to_tutorsFragment"
-            app:destination="@id/tutorsFragment" />
         <argument
             android:name="currentTutor"
             app:argType="com.example.gonnalearn.data.User" />

@@ -84,7 +84,7 @@ class SignupFragment : Fragment() {
             // Inserting user into the database
             if(insertUserToDatabase(email, password, fullName, role) == true){
                 // Authenticating User
-                (activity as MainActivity?)?.AuthenticateUser(email, password)
+                (activity as MainActivity?)?.AuthenticateUser()
             }
 
 
@@ -129,6 +129,7 @@ class SignupFragment : Fragment() {
 
         if(TextUtils.isEmpty(email) == false &&
             TextUtils.isEmpty(password) == false &&
+            TextUtils.isEmpty(fullName) == false &&
             TextUtils.isEmpty(role) == false){
 
             return true

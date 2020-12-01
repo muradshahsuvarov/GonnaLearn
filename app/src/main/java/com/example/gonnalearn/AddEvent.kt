@@ -48,7 +48,7 @@ class AddEvent : Fragment() {
 
         myInflater.addEventStartDate.setOnClickListener {
             val datePicker = DatePickerDialog(myInflater.context, DatePickerDialog.OnDateSetListener {
-                view, mYear, mMonth, mDay -> addEventStartDate.setText("$mDay/$mMonth/$mYear")
+                _, mYear, mMonth, mDay -> addEventStartDate.setText("$mDay/$mMonth/$mYear")
             } , year, month, day)
 
             datePicker.show()
@@ -57,7 +57,7 @@ class AddEvent : Fragment() {
 
         myInflater.addEventEndDate.setOnClickListener {
             val datePicker = DatePickerDialog(myInflater.context, DatePickerDialog.OnDateSetListener {
-                    view, mYear, mMonth, mDay -> addEventEndDate.setText("$mDay/$mMonth/$mYear")
+                    _, mYear, mMonth, mDay -> addEventEndDate.setText("$mDay/$mMonth/$mYear")
             } , year, month, day)
 
             datePicker.show()

@@ -1,32 +1,26 @@
 package com.example.gonnalearn
 
+import android.content.SharedPreferences.Editor
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TabHost
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import androidx.viewpager.widget.ViewPager
 import com.example.gonnalearn.data.Event
 import com.example.gonnalearn.data.EventViewModel
 import com.example.gonnalearn.data.User
-import com.example.gonnalearn.details.DetailsFragment
 import com.example.gonnalearn.ui.gallery.GalleryFragment
 import com.example.gonnalearn.ui.slideshow.SlideshowFragment
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     var role : String? = "Tutor" // Role of the authenticated user
 
+
     companion object{
 
         // Check whether to save the user session or not
@@ -46,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         var rememberedUser : User? = null
 
     }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +61,8 @@ class MainActivity : AppCompatActivity() {
 
         mEventViewModel = ViewModelProvider(this).get(EventViewModel::class.java)
 
+
+
         // Added by me
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -72,8 +71,8 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_schedule, R.id.nav_tutor_list,
-            R.id.nav_requests, R.id.nav_tutor_search, R.id.nav_sign_out), drawerLayout)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_schedule, R.id.nav_tutor_list,
+                R.id.nav_requests, R.id.nav_tutor_search, R.id.nav_sign_out), drawerLayout)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -95,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                     ll_2.setVisibility(View.VISIBLE)
 
 
-                }else if (id == R.id.nav_home && userRemembered) {
+                } else if (id == R.id.nav_home && userRemembered) {
 
                     // Hide "tabs" which is a "Tab Layout"
                     val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -109,9 +108,9 @@ class MainActivity : AppCompatActivity() {
                     // Replace fragment with ProfileFragment fragment
                     supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
 
-                }else if(id == R.id.nav_gallery){
+                } else if (id == R.id.nav_gallery) {
 
-                    try{
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -125,14 +124,14 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, GalleryFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "Hi there! This is a Toast.", Toast.LENGTH_SHORT).show()
                     }
 
 
-                }else if(id == R.id.nav_slideshow){
+                } else if (id == R.id.nav_slideshow) {
 
-                    try{
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -145,15 +144,15 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, SlideshowFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
 
 
-                }else if(id == R.id.nav_schedule){
+                } else if (id == R.id.nav_schedule) {
 
-                    if(role == "Tutor"){
-                        try{
+                    if (role == "Tutor") {
+                        try {
 
                             // Hide "tabs" which is a "Tab Layout"
                             val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -166,11 +165,11 @@ class MainActivity : AppCompatActivity() {
                             // Replace fragment with SlideShow fragment
                             supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorScheduleFragment()).commit()
 
-                        }catch(e : Exception){
+                        } catch (e: Exception) {
                             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                         }
-                    }else if(role == "Student"){
-                        try{
+                    } else if (role == "Student") {
+                        try {
 
                             // Hide "tabs" which is a "Tab Layout"
                             val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -183,13 +182,13 @@ class MainActivity : AppCompatActivity() {
                             // Replace fragment with SlideShow fragment
                             supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, StudentScheduleFragment()).commit()
 
-                        }catch(e : Exception){
+                        } catch (e: Exception) {
                             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                         }
                     }
 
-                }else if(id == R.id.nav_tutor_list){
-                    try{
+                } else if (id == R.id.nav_tutor_list) {
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -202,11 +201,11 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorsFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
-                }else if(id == R.id.nav_add_event){
-                    try{
+                } else if (id == R.id.nav_add_event) {
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -219,11 +218,11 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, AddEvent()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
-                }else if(id == R.id.nav_events){
-                    try{
+                } else if (id == R.id.nav_events) {
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -236,11 +235,11 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, EventFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
-                }else if(id == R.id.nav_student_events){
-                    try{
+                } else if (id == R.id.nav_student_events) {
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -253,11 +252,11 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, StudentEventFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
-                }else if(id == R.id.nav_requests){
-                    try{
+                } else if (id == R.id.nav_requests) {
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -270,11 +269,11 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, SubmittedRequestsFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
-                }else if(id == R.id.nav_tutor_requests){
-                    try{
+                } else if (id == R.id.nav_tutor_requests) {
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -287,11 +286,11 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorReqListFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
-                }else if(id == R.id.nav_tutor_search){
-                    try{
+                } else if (id == R.id.nav_tutor_search) {
+                    try {
 
                         // Hide "tabs" which is a "Tab Layout"
                         val tabs = findViewById<View>(R.id.tabs) as TabLayout
@@ -304,10 +303,10 @@ class MainActivity : AppCompatActivity() {
                         // Replace fragment with SlideShow fragment
                         supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, TutorsSearchFragment()).commit()
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
                     }
-                }else if(id == R.id.nav_sign_out){
+                } else if (id == R.id.nav_sign_out) {
 
                     userRemembered = false
                     rememberedUser = null
@@ -324,18 +323,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun requestEvent(event : Event, userEmail : String){
+    fun requestEvent(event: Event, userEmail: String){
 
         // Create event object
         var updatedEvent = Event(
-            event.id,
-            event.title,
-            event.description,
-            event.start_date,
-            event.end_date,
-            event.userId,
+                event.id,
+                event.title,
+                event.description,
+                event.start_date,
+                event.end_date,
+                event.userId,
                 userEmail,
-            "PENDING"
+                "PENDING"
         )
 
         // Update event
@@ -343,41 +342,41 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun acceptEvent(event : Event, userEmail : String){
+    fun acceptEvent(event: Event, userEmail: String){
 
         var updatedEvent = Event(
-            event.id,
-            event.title,
-            event.description,
-            event.start_date,
-            event.end_date,
-            event.userId,
-            userEmail,
-            "ACCEPTED"
+                event.id,
+                event.title,
+                event.description,
+                event.start_date,
+                event.end_date,
+                event.userId,
+                userEmail,
+                "ACCEPTED"
         )
 
         // Update event
         mEventViewModel.updateEvent(updatedEvent)
     }
 
-    fun rejectEvent(event : Event){
+    fun rejectEvent(event: Event){
 
         var updatedEvent = Event(
-            event.id,
-            event.title,
-            event.description,
-            event.start_date,
-            event.end_date,
-            event.userId,
-            "",
-            "AVAILABLE"
+                event.id,
+                event.title,
+                event.description,
+                event.start_date,
+                event.end_date,
+                event.userId,
+                "",
+                "AVAILABLE"
         )
 
         // Update event
         mEventViewModel.updateEvent(updatedEvent)
     }
 
-    fun AuthenticateUser(email : String, password: String){
+    fun AuthenticateUser(){
 
         try{
 
@@ -392,7 +391,7 @@ class MainActivity : AppCompatActivity() {
             // Replace fragment with ProfileFragment fragment
             supportFragmentManager.beginTransaction().replace(R.id.tab_linear_layout, ProfileFragment()).commit()
 
-        }catch(e : Exception){
+        }catch (e: Exception){
             Toast.makeText(baseContext, "$e", Toast.LENGTH_SHORT).show()
         }
     }

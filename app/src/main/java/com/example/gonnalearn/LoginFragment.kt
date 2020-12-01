@@ -71,7 +71,7 @@ class LoginFragment : Fragment() {
 
                     Toast.makeText(context, "Successfully Authenticated!", Toast.LENGTH_SHORT).show()
                     MainActivity.rememberedUser = authUser
-                    (activity as MainActivity?)?.AuthenticateUser(email,password)
+                    (activity as MainActivity?)?.AuthenticateUser()
                     userExists = false
 
                 }else{
